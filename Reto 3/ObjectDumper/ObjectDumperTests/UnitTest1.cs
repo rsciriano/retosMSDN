@@ -34,8 +34,10 @@ namespace ObjectDumperTests
 
             var dumper = new ObjectDumper<Test2Class>();
             var desc = dumper.Dump(new Test2Class());
-            Assert.AreEqual(new Test2Class.Test2Inner().ToString(), desc.First().Value);
 
+            var firstProperty = desc.First();
+            Assert.AreEqual("InnerClass", firstProperty.Key);
+            Assert.AreEqual(new Test2Class.Test2Inner().ToString(), firstProperty.Value);
         }
 
         [TestMethod]
@@ -54,7 +56,13 @@ namespace ObjectDumperTests
             };
 
             var desc = dumper.Dump(data);
+
+            //Con esto no se comprueba si relamente funciona porque KeyValuePair<string, string> nunca va a ser null
             Assert.IsNotNull(desc.SingleOrDefault(kvp => kvp.Key == "Value" && kvp.Value == IS_NOT_42));
+
+            Assert.AreNotEqual(
+                default(KeyValuePair<string, string>),
+                desc.SingleOrDefault(kvp => kvp.Key == "Value" && kvp.Value == IS_42));
         }
 
         [TestMethod]
@@ -73,8 +81,15 @@ namespace ObjectDumperTests
             var dumper = new ObjectDumper<Ufo>();
             dumper.AddTemplateFor(u => u.Origin, o => string.Format("Planet: {0}", o.Name));
             var desc = dumper.Dump(ufo);
+
+            //Con esto no se comprueba si relamente funciona porque KeyValuePair<string, string> nunca va a ser null
             Assert.IsNotNull(desc.SingleOrDefault(kvp =>
                 kvp.Key == "Origin" && kvp.Value == string.Format("Planet: {0}", ufo.Origin.Name)));
+
+
+            Assert.AreNotEqual(
+                default(KeyValuePair<string, string>), 
+                desc.SingleOrDefault(kvp => kvp.Key == "Origin" && kvp.Value == string.Format("Planet: {0}", ufo.Origin.Name)));
         }
 
         [TestMethod]
