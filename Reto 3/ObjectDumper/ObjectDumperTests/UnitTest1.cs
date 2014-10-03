@@ -20,6 +20,21 @@ namespace ObjectDumperTests
         }
 
         [TestMethod]
+        public void No_Crash_With_Null_Properties()
+        {
+            var obj = new Test2Class.Test2Inner();
+            obj.Name = null;
+            obj.Value = 25;
+
+            var dumper = new ObjectDumper<Test2Class.Test2Inner>();
+            var desc1 = dumper.Dump(obj).Select(kvp => kvp.Key);
+            var desc2 = dumper.Dump(obj).Select(kvp => kvp.Value);
+
+            CollectionAssert.AreEqual(desc1.ToList(), new List<string>() { "Name", "Value"});
+            CollectionAssert.AreEqual(desc2.ToList(), new List<string>() { null, "25"});
+        }
+
+        [TestMethod]
         public void Dump_Is_Sorted_By_Property_Name()
         {
             var dumper = new ObjectDumper<Test3Class>();
@@ -47,6 +62,10 @@ namespace ObjectDumperTests
             const string IS_NOT_42 = "not meaningful";
 
             var dumper = new ObjectDumper<Test2Class.Test2Inner>();
+            
+            // Probar que si se añaden dos plantillas para el mismo campo , se usa la última
+            dumper.AddTemplateFor(o => o.Value, v => "Duplicated key");
+
             dumper.AddTemplateFor(o => o.Value, v => v == 42 ? IS_42 : IS_NOT_42);
 
             var data = new Test2Class.Test2Inner()

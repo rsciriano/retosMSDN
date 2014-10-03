@@ -20,18 +20,23 @@ namespace ObjectDumper
             }
             else
             {
+                // Bucle por las propiedades publicas del objeto
                 foreach (var prop in source.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty).OrderBy(p => p.Name))
                 {
+                    // Solo trabajar con propiedades que tienen método Get
                     if (prop.GetMethod != null)
                     {
+                        // Buscar template para la propiedad
                         Delegate templateDelegate;
                         if (templates.TryGetValue(prop.Name, out templateDelegate))
                         {
+                            // Aplicar template al valor
                             yield return new KeyValuePair<string, string>(prop.Name, (string) templateDelegate.DynamicInvoke(prop.GetValue(source)));
                         }
                         else
                         {
-                            yield return new KeyValuePair<string, string>(prop.Name, prop.GetValue(source).ToString());
+                            // Llamar a ToString (teniendo en cuenta el valor null)
+                            yield return new KeyValuePair<string, string>(prop.Name, prop.GetValue(source) != null ? prop.GetValue(source).ToString() : null);
                         }
                     }
                 }
@@ -41,9 +46,12 @@ namespace ObjectDumper
         {
             if (property != null)
             {
+                // Obtener expresión pata poder extraer el nombre de la propiedad
                 MemberExpression exp = property.Body as MemberExpression;
+                
+                // Almacenar la template en el diccionario  
                 if (exp != null)
-                    templates.Add(exp.Member.Name, value);
+                    templates[exp.Member.Name] = value;
             }
         }
     }
