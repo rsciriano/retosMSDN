@@ -19,54 +19,39 @@ namespace Shuffler
 
             Random rnd = new Random();
 
-            // Lista auxiliar con elementos pendientes de ordenar
-            List<int> aux = Enumerable.Range(0, length).ToList();
+            // Lista auxiliar con orden generado aleatotiamente
+            List<int> aux = Enumerable.Range(0, length).OrderBy(v => rnd.Next()).ToList();
 
             // Lista elementos reordenados
             List<int> shuffled = new List<int>(length);
 
-            // Bucle por los elementos a ordenar
-            for (int i = 0; i < length; i++)
+            // Variable para almacenar elemento que coincide con posición original
+            int? pending = null;
+
+            // Bucle por evitar que un elemento coincida con su posición original
+            foreach (int i in aux)
             {
-                // Elegir aleatoriamente un elemento de la lista pendiente
-                int r = rnd.Next(length - i);
-
-                // Obtener la posición original del elemento elegido eleatoriamente
-                int pos = aux[r];
-
-                if ( pos != i)
+                if (i != shuffled.Count)
                 {
-                    // La posición original no coincide con la nueva, añadirlo a la lista
-                    shuffled.Add(source[pos]);
+                    // Añadir nuevo elemento a la lista aleatoria
+                    shuffled.Add(source[i]);
+
+                    // Añadir elemento pendiente de iteración anterior si lo había
+                    if (pending.HasValue)
+                    {
+                        shuffled.Add(source[pending.Value]);
+                        pending = null;
+                    }
                 }
                 else
                 {
-                    if (aux.Count > 1)
-                    {
-                        // La posición original coincide con la nueva y no es el último de la lista de pendientes, 
-                        // tomar el elemento superior o inferior de los pendientes
-                        if (r < aux.Count - 1)
-                            r++;
-                        else
-                            r--;
-                        pos = aux[r];
-
-                        // Añadir elemento a la nueva lista
-                        shuffled.Add(source[pos]);
-                    }
-                    else
-                    {
-                        // La posición original coincide con la nueva pero es el último de la lista de pendientes, 
-                        // intercambiarlo por el ultimo en la lista reordenada
-                        shuffled.Add(shuffled[i -1]);
-                        shuffled[i - 1] = source[pos];
-                    }
+                    // Comprobación de que solo hay un elemento pendiente
+                    Debug.Assert(!pending.HasValue);
+                    
+                    // Guardar el elemento pendiente
+                    pending = i;
                 }
-
-                // Eliminar elemento de la lista de pendientes
-                aux.RemoveAt(r);
             }
-
             return shuffled;
         }
     }
