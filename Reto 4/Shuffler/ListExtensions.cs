@@ -20,7 +20,7 @@ namespace Shuffler
             Random rnd = new Random();
 
             // Lista auxiliar con orden generado aleatotiamente
-            List<int> aux = Enumerable.Range(0, length).OrderBy(v => rnd.Next()).ToList();
+            IEnumerable<int> aux = Enumerable.Range(0, length).OrderBy(v => rnd.Next());
 
             // Lista elementos reordenados
             List<int> shuffled = new List<int>(length);
