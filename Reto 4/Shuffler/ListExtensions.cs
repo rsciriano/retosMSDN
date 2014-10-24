@@ -10,7 +10,7 @@ namespace Shuffler
 {
     public static class ListExtensions
     {
-        public static List<int> Shuffle(this List<int> source)
+        public static List<T> Shuffle<T>(this List<T> source)
         {
             if (source == null)
                 return null;
@@ -23,7 +23,7 @@ namespace Shuffler
             IEnumerable<int> aux = Enumerable.Range(0, length).OrderBy(v => rnd.Next());
 
             // Lista elementos reordenados
-            List<int> shuffled = new List<int>(length);
+            List<T> shuffled = new List<T>(length);
 
             // Variable para almacenar elemento que coincide con posición original
             int? pending = null;
