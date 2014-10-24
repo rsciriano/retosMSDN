@@ -41,6 +41,27 @@ namespace UnitTestProject
         }
 
         [TestMethod]
+        public void TestShuffle3StringItems()
+        {
+            List<string> original = new List<string>() { "a", "b", "c" };
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            List<string> shuffled = original.Shuffle();
+
+            stopwatch.Stop();
+            Console.WriteLine(string.Format("Shuffling 3 items took {0} milliseconds or {1} ticks", stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks));
+
+            CollectionAssert.AllItemsAreUnique(shuffled);
+            for (int index = 0; index < shuffled.Count; index++)
+            {
+                Assert.AreNotEqual(original[index], shuffled[index]);
+            }
+        }
+
+
+        [TestMethod]
         public void TestShuffle10000Items()
         {
             List<int> original = GenerateTestList(10000);
