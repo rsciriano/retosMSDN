@@ -58,6 +58,12 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reto5\Reto5.csproj">
+      <Project>{24f33325-affd-4c65-80c2-eed0907d2ff0}</Project>
+      <Name>Reto5</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
