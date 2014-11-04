@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,13 +33,15 @@ namespace Reto5
             if (source == null)
             {
                 if (name != null)
+                {
+                    StackTrace st = new StackTrace(true);
                     throw new ArgumentNullException(
-                        string.Format("TestNotNullWithNull{0}{1} was called with null parameter\r\nParameter name: {2}", 
-                            typeof(T).Name,
-                            typeof(T) == typeof(String) ? "" : "Object",
+                        string.Format("{0} was called with null parameter\r\nParameter name: {1}",
+                            st.GetFrame(1).GetMethod().Name,
                             name)
                         , (Exception)null);
-                else 
+                }
+                else
                     throw new ArgumentNullException();
             }
             else

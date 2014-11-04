@@ -14,7 +14,7 @@ namespace UnitTestProject1
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void TestNotNullWithNullString2()
+        public void TestNotNullWithNullString()
         {
             try
             {
@@ -29,14 +29,14 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void TestNotNullWithString2()
+        public void TestNotNullWithString()
         {
             string name = "AlejaCMa";
             Assert.AreEqual(name, name.NotNull());
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void TestNotNullWithNullDummyObject2()
+        public void TestNotNullWithNullDummyObject()
         {
             try
             {
@@ -51,7 +51,7 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void TestNotNullWithDummyObject2()
+        public void TestNotNullWithDummyObject()
         {
             Dummy dummy = new Dummy();
             Assert.AreEqual(dummy, dummy.NotNull());
