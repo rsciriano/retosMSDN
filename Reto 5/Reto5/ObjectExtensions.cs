@@ -27,7 +27,7 @@ namespace Reto5
                 }
             }
         }
-        public static T NotNull<T>(this T source, string name = null)
+        public static T NotNull<T>(this T source, string name = null) where T: class
         {
             if (source == null)
             {
@@ -44,6 +44,21 @@ namespace Reto5
             else
             {
                 return source;
+            }
+        }
+
+        public static DateTime From(this Duration duration, DateTime dt)
+        {
+            switch (duration)
+            {
+                case Duration.Day:
+                    return dt.AddDays(1);                    
+                case Duration.Week:
+                    return dt.AddDays(7);
+                case Duration.Month:
+                    return dt.AddMonths(1);
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }
