@@ -8,9 +8,6 @@ namespace Reto8
 {
     public class AlphabeticalOrder
     {
-        /// <summary>
-        /// Comparador de la primera fase: comparar solo los primeros caracteres de la cadena mas corta 
-        /// </summary>
         public class LexicographicalStringComparer : IComparer<string>
         {
             public int Compare(string x, string y)
@@ -18,18 +15,7 @@ namespace Reto8
                 if (x == null || y == null)
                     throw new ArgumentNullException();
 
-                int min = Math.Min(x.Length, y.Length);                
-                
-                // Comparación estandar de los primeros caracteres
-                int r = 0;
-                for (int i = 0; i < min; i++)
-                {
-                    r = x[i].CompareTo(y[i]);
-                    if (r != 0)
-                        return r;
-                }
-
-                // Comparación contatenando las dos cadenas cuando coinciden los primeros caracteres
+                // Comparación contatenando las dos cadenas
                 return (x + y).CompareTo(y + x); 
             }
         }
